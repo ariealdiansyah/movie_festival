@@ -1,6 +1,6 @@
-# movie
+# Movie Festival System
 
-This template should help get you started developing with Vue 3 in Vite.
+A movie festival system built with Vue 3 in Vite using the Composition API, Pinia for state management, and Tailwind CSS for styling. The system enables admins to upload, edit, and view movie data, while authenticated users can vote for movies and track viewership.
 
 ## Recommended IDE Setup
 
@@ -9,6 +9,30 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Customize configuration
 
 See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Features
+
+### Admin
+
+- Add and upload movies (title, description, duration, artists, genres, and video URL).
+- Edit movie details.
+- View analytics, including most viewed movies and genres.
+
+### User
+
+- Browse and search movies.
+- Watch movies (video views are counted if watched for more than one minute) <!-- temporary disable because issue on video link -->.
+- Vote (upvote or downvote) for movies.
+- View list of voted movies.
+
+## Technologies Used
+
+- **Vue 3 Composition API**: For building reusable and maintainable components.
+- **Pinia**: For state management.
+- **Tailwind CSS**: For styling and responsive design.
+- **Axios**: For API requests to interact with a mock backend.
+- **json-server**: To mock the backend API.
+- **Concurrent Libraries**: To run both the Vue app and `json-server` simultaneously
 
 ## Project Setup
 
@@ -28,14 +52,15 @@ npm run dev
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Notes on Concurrent Libraries
 
-```sh
-npm run test:unit
-```
+### Why Concurrently?
 
-### Lint with [ESLint](https://eslint.org/)
+In development, it is essential to run the frontend and backend simultaneously. Using `concurrently` simplifies this process by running multiple processes (e.g., `npm run dev` for the Vue app and `json-server` for the mock API) in parallel.
 
-```sh
-npm run lint
-```
+### Customizing Ports
+
+- If the default ports (`5173` for Vue and `3000` for `json-server`) are unavailable, you can modify them in the respective configurations:
+  - Change Vue app port in `vite.config.js`.
+  - Change `json-server` port using the `--port` flag.
+    """
