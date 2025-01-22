@@ -1,0 +1,54 @@
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "BARU KALI INI COBAIN MAKAN MIE KOCOK TAPI PAKE TOPPING AYAM KAMPUNG!!",
+      "description": "An example description.",
+      "duration": 120,
+      "artists": [
+        "Actor 1",
+        "Actor 2"
+      ],
+      "genres": [
+        "Drama",
+        "Action"
+      ],
+      "watchUrl": "https://www.youtube.com/embed/KPXpnCadt58",
+      "imageUrl": "https://img.youtube.com/vi/KPXpnCadt58/hqdefault.jpg",
+      "views": 18,
+      "upvotes": 18,
+      "downvotes": 8
+    },
+    {
+      "title": "KEBAKARAN LA & KEGAGALAN POLITISI",
+      "description": "KEBAKARAN LA & KEGAGALAN POLITISI",
+      "duration": 19,
+      "artists": [
+        "Eko"
+      ],
+      "genres": [
+        "Tech"
+      ],
+      "watchUrl": "https://www.youtube.com/embed/eqgErYqN3TI",
+      "imageUrl": "https://img.youtube.com/vi/eqgErYqN3TI/hqdefault.jpg",
+      "id": "abbe",
+      "views": 0,
+      "upvotes": 0,
+      "downvotes": 0
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@test.com",
+      "password": "password123",
+      "role": "admin"
+    },
+    {
+      "id": "2",
+      "email": "user@test.com",
+      "password": "password123",
+      "role": "user"
+    }
+  ]
+}
