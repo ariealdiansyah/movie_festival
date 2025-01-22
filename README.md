@@ -57,9 +57,3 @@ npm run build
 ### Why Concurrently?
 
 In development, it is essential to run the frontend and backend simultaneously. Using `concurrently` simplifies this process by running multiple processes (e.g., `npm run dev` for the Vue app and `json-server` for the mock API) in parallel.
-
-### Customizing Ports
-
-- If the default ports (`5173` for Vue and `3000` for `json-server`) are unavailable, you can modify them in the respective configurations:
-  - Change Vue app port in `vite.config.js`.
-  - Change `json-server` port using the `--port` flag.
