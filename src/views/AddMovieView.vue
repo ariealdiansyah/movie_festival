@@ -42,7 +42,7 @@ const addMovie = async () => {
     genres: genres.value.split(',').map(g => g.trim()),
     watchUrl: watchUrl.value,
     imageUrl: imageUrl.value,
-    views: 0,
+    views: [],
     upvotes: 0,
     downvotes: 0,
   };

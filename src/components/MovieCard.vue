@@ -16,12 +16,12 @@
     </div>
 
     <div v-if="!isAdmin" class="mt-4 flex justify-between items-center">
-      <button @click.stop="vote(props.movie.id)"
+      <button @click.stop="vote(props.movie.id, 'upvote')"
         class="flex items-center bg-green-600 mx-1 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition">
         <span class="text-lg mr-2">👍</span>
         Upvote ({{ props.movie.upvotes }})
       </button>
-      <button @click.stop="unvote(props.movie.id)"
+      <button @click.stop="vote(props.movie.id, 'downvote')"
         class="flex items-center bg-red-600 mx-1 text-white px-3 py-2 rounded-lg hover:bg-red-700 transition">
         <span class="text-lg mr-2">👎</span>
         Downvote ({{ props.movie.downvotes }})
@@ -57,13 +57,13 @@ const router = useRouter();
 
 const isAdmin = computed(() => store.user?.role === 'admin');
 
-const vote = async (movieId) => {
-  await store.vote(movieId);
+const vote = async (movieId, type) => {
+  await store.vote(movieId, type);
 };
 
-const unvote = async (movieId) => {
-  await store.unvote(movieId);
-};
+// const unvote = async (movieId) => {
+//   await store.unvote(movieId);
+// };
 
 const goToDetail = (movieId) => {
   router.push(`/movies/${movieId}`);

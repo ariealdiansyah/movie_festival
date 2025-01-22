@@ -15,7 +15,7 @@ export const useStore = defineStore('main', {
       const { data } = await axios.get('http://localhost:3000/movies')
       this.movies = data
     },
-    async detailsMovie(movieId) {
+    async getDetail(movieId) {
       const { data } = await axios.get(`http://localhost:3000/movies/${movieId}`)
       this.detailMovie = data
     },
@@ -25,37 +25,78 @@ export const useStore = defineStore('main', {
     },
     async incrementView(movieId) {
       const movie = this.movies.find((m) => m.id === movieId)
+      const alreadyView =
+        this.user.viewedMovies.length > 0 && this.user.viewedMovies.find((m) => m == movieId)
       if (!movie) return
 
-      movie.views += 1
-      await axios.patch(`http://localhost:3000/movies/${movieId}`, {
-        views: movie.views,
-      })
-    },
-    async vote(movieId) {
-      const movie = this.movies.find((m) => m.id === movieId)
-      // console.log('user', this.user, 'movi', movie)
-      if (!movie || !this.user) return alert('Login required!')
-      console.log('mmm', movie)
-      const { data } = await axios.patch(`http://localhost:3000/movies/${movieId}`, {
-        upvotes: movie.upvotes + 1,
-        downvotes: movie.downvotes,
+      if (!alreadyView) {
+        movie.views += 1
+        this.user.viewedMovies.push(movieId)
+      }
+
+      const user = await axios.patch(`http://localhost:3000/users/${this.user.id}`, {
+        viewedMovies: this.user.viewedMovies,
       })
 
-      await this.fetchMovies()
+      const { data } = await axios.patch(`http://localhost:3000/movies/${movieId}`, {
+        views: movie.views,
+      })
+
       this.detailMovie = data
+      this.user = user.data
     },
-    async unvote(movieId) {
+    async vote(movieId, type) {
+      // const movie = this.movies.find((m) => m.id === movieId)
+      // // console.log('user', this.user, 'movi', movie)
+      // if (!movie || !this.user) return alert('Login required!')
+      // console.log('mmm', movie)
+      // const { data } = await axios.patch(`http://localhost:3000/movies/${movieId}`, {
+      //   upvotes: movie.upvotes + 1,
+      //   downvotes: movie.downvotes,
+      // })
+
       const movie = this.movies.find((m) => m.id === movieId)
       if (!movie || !this.user) return
 
+      const isUpvote = type === 'upvote'
+      const userId = this.user.id
+
+      console.log('movie', movie)
+      movie.votes.upvotedBy = movie.votes.upvotedBy.filter((id) => id !== userId)
+      movie.votes.downvotedBy = movie.votes.downvotedBy.filter((id) => id !== userId)
+
+      if (isUpvote) {
+        movie.votes.upvotedBy.push(userId)
+      } else {
+        movie.votes.downvotedBy.push(userId)
+      }
+
+      if (!this.user.votedMovies.includes(movieId)) {
+        this.user.votedMovies.push(movieId)
+      }
       const { data } = await axios.patch(`http://localhost:3000/movies/${movieId}`, {
-        upvotes: movie.upvotes,
-        downvotes: movie.downvotes + 1,
+        votes: {
+          upvotedBy: movie.votes.upvotedBy,
+          downvotedBy: movie.votes.downvotedBy,
+        },
+        upvotes: movie.votes.upvotedBy.length,
+        downvotes: movie.votes.downvotedBy.length,
       })
+
       await this.fetchMovies()
       this.detailMovie = data
     },
+    // async unvote(movieId) {
+    //   const movie = this.movies.find((m) => m.id === movieId)
+    //   if (!movie || !this.user) return
+
+    //   const { data } = await axios.patch(`http://localhost:3000/movies/${movieId}`, {
+    //     upvotes: movie.upvotes,
+    //     downvotes: movie.downvotes + 1,
+    //   })
+    //   await this.fetchMovies()
+    //   this.detailMovie = data
+    // },
     async login({ email, password }) {
       // const { data } = await axios.post('http://localhost:3000/users', { email, password })
       // const { data } = await axios.get('http://localhost:3000/users', {
@@ -101,6 +142,9 @@ export const useStore = defineStore('main', {
       console.log('a', genreViews, 'b', mostViewedGenre)
       this.mostViewedGenre = { genre: mostViewedGenre[0], views: mostViewedGenre[1] }
       // this.mostViewed = this.movies.reduce((a, b) => (b.views > a.views ? b : a), null)
+    },
+    async fetchMostVotedMovies() {
+      return this.movies.sort((a, b) => b.upvotes - a.upvotes).slice(0, 5)
     },
   },
   persist: {

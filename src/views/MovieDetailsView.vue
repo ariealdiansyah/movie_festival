@@ -15,7 +15,7 @@
       <button @click="vote(movie.id, 'upvote')" class="px-4 py-2 rounded bg-green-500 text-white">
         👍 Upvote
       </button>
-      <button @click="unvote(movie.id, 'downvote')" class="px-4 py-2 rounded bg-red-500 text-white">
+      <button @click="vote(movie.id, 'downvote')" class="px-4 py-2 rounded bg-red-500 text-white">
         👎 Downvote
       </button>
     </div>
@@ -23,8 +23,7 @@
 </template>
 
 <script setup>
-// eslint-disable-next-line no-unused-vars
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from '../stores/index';
 
@@ -34,13 +33,6 @@ const movieId = route.params.id;
 const movie = computed(() => store.detailMovie);
 // const watchStartTime = ref(null);
 // const watchDuration = ref(0);
-
-// const fetchMovie = async () => {
-//   const foundMovie = store.movies.find((m) => m.id === movieId);
-//   console.log('found', foundMovie)
-//   if (!foundMovie) await store.fetchMovies();
-//   movie.value = store.movies.find((m) => m.id === movieId);
-// };
 
 const startTracking = () => {
   // watchStartTime.value = Date.now();
@@ -58,16 +50,11 @@ const stopTracking = async () => {
   // }
 };
 
-const vote = async (movieId) => {
-  await store.vote(movieId);
+const vote = async (movieId, type) => {
+  await store.vote(movieId, type);
 };
-
-const unvote = async (movieId) => {
-  await store.unvote(movieId);
-};
-
 onMounted(async () => {
-  await store.detailsMovie(movieId)
+  await store.getDetail(movieId)
   await store.incrementView(movieId);
 });
 
